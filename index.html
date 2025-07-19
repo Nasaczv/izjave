@@ -4,9 +4,12 @@
   <meta charset="UTF-8">
   <title>Export PNG 960x1200</title>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <meta name="viewport" content="width=710, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
   label {
+    margin-bottom: 0;
+}
+
+label {
     margin-bottom: 0;
 }
 
@@ -14,25 +17,11 @@
     display: flex;
     flex-wrap: nowrap !important;
 }
-.mega-w label {
-    display: block;
-}
-
-.capture-area {
-    position: relative;
-    width: 960px;
-    height: 1200px;
-    overflow: hidden;
-    background-color: #7b7b7b;
-}
-
-.giga-wrapper {
-    gap: 20px;
-}
     @font-face {
       font-family: 'MyriadProBoldCond';
       src: url('MyriadPro-BoldCond.otf') format('opentype');
     }
+
 
     body {
       font-family: 'MyriadProBoldCond', sans-serif;
@@ -51,7 +40,7 @@
       width: 960px;
       height: 1200px;
       overflow: hidden;
-      background-color: rgb(201, 201, 201);
+      background-color: rgb(184, 184, 184);
     }
 
     .bg-img {
@@ -66,7 +55,7 @@
 
     .overlay-text {
       position: absolute;
-      bottom: 79px;
+      bottom: 108px;
       font-size: 77px;
       max-width: 73%;
       left: 0;
@@ -77,21 +66,29 @@
       line-height: 1;
       white-space: normal;
       overflow-wrap: break-word;
+      z-index: 5555;
+    }
+
+    .overlay-text-2 {
+      font-size: 33px;
+      letter-spacing: 0px;
+      line-height: 30px;
+      text-transform: uppercase;
+      color: #a50000;
+      text-align: center;
+      position: absolute;
+      bottom: 30px;
+      margin: 0 auto;
+      left: 0;
+      right: 0;
       z-index: 555;
+ 
     }
 
     #export-area-wrapper {
       position: absolute;
       left: -9999px;
       top: -9999px;
-    }
-
-    #html-input {
-      width: 100%;
-      min-height: 100px;
-      border: 1px solid #ccc;
-      padding: 8px;
-      font-size: 16px;
     }
 
     [contenteditable][data-placeholder]:empty:before {
@@ -131,12 +128,20 @@
       width: 60px;
     }
 
+    #html-input {
+      width: 100%;
+      min-height: 100px;
+      border: 1px solid #ccc;
+      padding: 8px;
+      font-size: 16px;
+    }
+
     button {
       font-size: 16px;
     }
-.capture-area:after {
+    .capture-area:after {
     content: '';
-    background-image: url(html-css-25.png);
+    background-image: url(html-css-26.png);
     width: 100%;
     height: 100%;
     display: block;
@@ -152,18 +157,20 @@
     min-width: 700px;
     gap: 20px;
 }
-body > div > div:nth-child(1) > label {
+.mega-w label {
     display: block;
 }
+
   </style>
 </head>
 <body>
     <div class="giga-wrapper">
-        <div>
+<div class="mega-w">
 <!-- PREVIEW -->
 <div class="preview-wrapper">
   <div id="preview-area" class="capture-area">
-    <img id="preview-bg" class="bg-img" src="/uploads/2025/07/ТЕКСТ-4-5-1.png" alt="BG" draggable="false">
+    <img id="preview-bg" class="bg-img" src="html-css-26.png" alt="BG" draggable="false">
+    <div id="preview-text-2" class="overlay-text-2">ИЗЈАВУ ДАЈЕ:</div>
     <div id="preview-text" class="overlay-text"></div>
   </div>
 </div>
@@ -171,7 +178,8 @@ body > div > div:nth-child(1) > label {
 <!-- EXPORT -->
 <div id="export-area-wrapper">
   <div id="export-area" class="capture-area">
-    <img id="export-bg" class="bg-img" src="/uploads/2025/07/ТЕКСТ-4-5-1.png" alt="BG" draggable="false">
+    <img id="export-bg" class="bg-img" src="html-css-26.png" alt="BG" draggable="false">
+    <div id="export-text-2" class="overlay-text-2">ИЗЈАВУ ДАЈЕ:</div>
     <div id="export-text" class="overlay-text"></div>
   </div>
 </div>
@@ -179,10 +187,8 @@ body > div > div:nth-child(1) > label {
 <label>📸 Odaberi pozadinsku sliku:
   <input type="file" id="bg-upload" accept="image/*">
 </label>
-
-<br><br>
 </div>
-<div>
+<div class="wrapper-1">
 <!-- TOOLBAR -->
 <div class="toolbar">
   <button onclick="execCmd('bold')"><b>Bold</b></button>
@@ -194,13 +200,16 @@ body > div > div:nth-child(1) > label {
   <input type="color" onchange="execCmd('foreColor', this.value)" value="#a50000">
 </div>
 
-<!-- HTML EDITOR -->
-<label>📝 Unesi HTML tekst:</label><br>
-<div id="html-input" contenteditable="true" data-placeholder="МАРКУС ВИЛИЈАМС ЈЕ<br>НОВО ПОЈАЧАЊЕ<br>ЗВЕЗДЕ!"></div>
+<!-- HTML TEXT INPUT -->
+<label>📝 Unesi HTML текст:</label><br>
+<div id="html-input" contenteditable="true" data-placeholder="“Звезда од Барија није имала бољи тим!”"></div>
 
 <br>
+<label>✍️ Unesi текст за изјаву:</label><br>
+<input type="text" id="statement-input" placeholder="ИЗЈАВУ ДАЈЕ:" style="width: 100%; padding: 8px; font-size: 16px;">
+<br><br>
 
-<!-- RANGE KONTROLE -->
+<!-- KONTROLE -->
 <div class="range-control">
   <label>🔠 Font size:</label>
   <input type="range" id="font-size-range" min="10" max="200" value="77">
@@ -222,14 +231,15 @@ body > div > div:nth-child(1) > label {
 
 <div class="range-control">
   <label>⬇️ Udaljenost od dna (px):</label>
-  <input type="range" id="bottom-range" min="0" max="400" value="79">
-  <input type="number" id="bottom-input" min="0" max="400" value="79">
+  <input type="range" id="bottom-range" min="0" max="400" value="108">
+  <input type="number" id="bottom-input" min="0" max="400" value="108">
 </div>
 
+<!-- EXPORT -->
 <br>
-
 <button id="generate">🎨 Generate PNG</button>
 <a id="download-link" style="display: none;" download="output.png">⬇️ Preuzmi sliku</a>
+</div>
 </div>
 <script>
   const previewBg = document.getElementById('preview-bg');
@@ -245,7 +255,7 @@ body > div > div:nth-child(1) > label {
     exportBg.style.transform = transform;
   }
 
-  // Desktop drag
+  // Desktop
   document.getElementById('preview-area').addEventListener('mousedown', e => {
     isDragging = true;
     dragStart = { x: e.clientX - pos.x, y: e.clientY - pos.y };
@@ -260,17 +270,15 @@ body > div > div:nth-child(1) > label {
 
   window.addEventListener('mouseup', () => isDragging = false);
 
-  // Zoom
   document.getElementById('preview-area').addEventListener('wheel', e => {
     e.preventDefault();
-    scale += e.deltaY > 0 ? -0.05 : 0.05;
-    scale = Math.min(Math.max(0.2, scale), 5);
+    const delta = e.deltaY > 0 ? -0.05 : 0.05;
+    scale = Math.min(Math.max(0.2, scale + delta), 5);
     updateTransform();
   });
 
-  // Touch drag + pinch zoom
+  // Mobile
   const area = document.getElementById('preview-area');
-
   area.addEventListener('touchstart', e => {
     lastTouches = [...e.touches];
     if (e.touches.length === 1) {
@@ -288,11 +296,10 @@ body > div > div:nth-child(1) > label {
       pos.x = e.touches[0].clientX - dragStart.x;
       pos.y = e.touches[0].clientY - dragStart.y;
     } else if (e.touches.length === 2) {
-      const dist = (touches) =>
-        Math.hypot(
-          touches[0].clientX - touches[1].clientX,
-          touches[0].clientY - touches[1].clientY
-        );
+      const dist = t => Math.hypot(
+        t[0].clientX - t[1].clientX,
+        t[0].clientY - t[1].clientY
+      );
       const oldDist = dist(lastTouches);
       const newDist = dist(e.touches);
       if (oldDist > 0) {
@@ -324,7 +331,7 @@ body > div > div:nth-child(1) > label {
     reader.readAsDataURL(file);
   });
 
-  // Text formatting
+  // Text
   function execCmd(command, value = null) {
     if (command === 'insertLineBreak') {
       document.execCommand('insertHTML', false, '<br>');
@@ -342,6 +349,12 @@ body > div > div:nth-child(1) > label {
 
   document.getElementById('html-input').addEventListener('input', syncHTML);
 
+  document.getElementById('statement-input').addEventListener('input', function () {
+    const value = this.value || "ИЗЈАВУ ДАЈЕ:";
+    document.getElementById('preview-text-2').innerText = value;
+    document.getElementById('export-text-2').innerText = value;
+  });
+
   function syncDualInputs(rangeEl, numberEl, callback) {
     rangeEl.addEventListener('input', () => {
       numberEl.value = rangeEl.value;
@@ -353,42 +366,26 @@ body > div > div:nth-child(1) > label {
     });
   }
 
-  syncDualInputs(
-    document.getElementById('font-size-range'),
-    document.getElementById('font-size-input'),
-    value => {
-      document.getElementById('preview-text').style.fontSize = value + 'px';
-      document.getElementById('export-text').style.fontSize = value + 'px';
-    }
-  );
+  syncDualInputs(document.getElementById('font-size-range'), document.getElementById('font-size-input'), v => {
+    document.getElementById('preview-text').style.fontSize = v + 'px';
+    document.getElementById('export-text').style.fontSize = v + 'px';
+  });
 
-  syncDualInputs(
-    document.getElementById('line-height-range'),
-    document.getElementById('line-height-input'),
-    value => {
-      document.getElementById('preview-text').style.lineHeight = value;
-      document.getElementById('export-text').style.lineHeight = value;
-    }
-  );
+  syncDualInputs(document.getElementById('line-height-range'), document.getElementById('line-height-input'), v => {
+    document.getElementById('preview-text').style.lineHeight = v;
+    document.getElementById('export-text').style.lineHeight = v;
+  });
 
-  syncDualInputs(
-    document.getElementById('max-width-range'),
-    document.getElementById('max-width-input'),
-    value => {
-      const width = value + '%';
-      document.getElementById('preview-text').style.maxWidth = width;
-      document.getElementById('export-text').style.maxWidth = width;
-    }
-  );
+  syncDualInputs(document.getElementById('max-width-range'), document.getElementById('max-width-input'), v => {
+    const w = v + '%';
+    document.getElementById('preview-text').style.maxWidth = w;
+    document.getElementById('export-text').style.maxWidth = w;
+  });
 
-  syncDualInputs(
-    document.getElementById('bottom-range'),
-    document.getElementById('bottom-input'),
-    value => {
-      document.getElementById('preview-text').style.bottom = value + 'px';
-      document.getElementById('export-text').style.bottom = value + 'px';
-    }
-  );
+  syncDualInputs(document.getElementById('bottom-range'), document.getElementById('bottom-input'), v => {
+    document.getElementById('preview-text').style.bottom = v + 'px';
+    document.getElementById('export-text').style.bottom = v + 'px';
+  });
 
   document.getElementById('generate').addEventListener('click', function () {
     syncHTML();
@@ -408,6 +405,7 @@ body > div > div:nth-child(1) > label {
 
   updateTransform();
 </script>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     let metaTag = document.querySelector('meta[name="viewport"]');
@@ -421,6 +419,7 @@ body > div > div:nth-child(1) > label {
     }
   });
 </script>
+
 
 </body>
 </html>
