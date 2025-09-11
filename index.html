@@ -199,14 +199,6 @@
         <button onclick="execCmd('justifyCenter')">Centar</button>
         <button onclick="execCmd('justifyRight')">Desno</button>
         <button onclick="execCmd('insertLineBreak')">↩ Novi red</button>
-
-        <!-- Vizuelna dugmad za boje -->
-        <button type="button" class="apply-color color-btn" data-color="#333" style="color:#333" aria-label="Boja #333">
-          <span class="color-dot" aria-hidden="true"></span>
-        </button>
-        <button type="button" class="apply-color color-btn" data-color="#a50000" style="color:#a50000" aria-label="Boja #a50000">
-          <span class="color-dot" aria-hidden="true"></span>
-        </button>
       </div>
 
       <!-- HTML TEXT INPUT -->
@@ -214,9 +206,18 @@
       <div id="html-input" contenteditable="true" data-placeholder="“Звезда од Барија није имала бољи тим!”"></div>
 
       <br>
+      <div class="toolbar">
       <label>✍️ Unesi текст за изјаву:</label><br>
       <input type="text" id="statement-input" placeholder="ИЗЈАВУ ДАЈЕ:" style="width: 100%; padding: 8px; font-size: 16px;">
       <br><br>
+        <button type="button" class="apply-color color-btn" data-color="#333" style="color:#333" aria-label="Boja #333">
+          <span class="color-dot" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="apply-color color-btn" data-color="#a50000" style="color:#a50000" aria-label="Boja #a50000">
+          <span class="color-dot" aria-hidden="true"></span>
+        </button>
+      </div>
+      <br>
 
       <!-- KONTROLE -->
       <div class="range-control">
