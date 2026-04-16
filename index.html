@@ -2,28 +2,37 @@
 <html lang="sr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Export PNG 960x1200</title>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     label { margin-bottom: 0; }
     .capture-area img { width: 100%; }
-    .range-control { display: flex; flex-wrap: nowrap !important; }
 
     @font-face {
       font-family: 'MyriadProBoldCond';
       src: url('MyriadPro-BoldCond.otf') format('opentype');
     }
 
+    *, *::before, *::after { box-sizing: border-box; }
+
     body {
       font-family: 'MyriadProBoldCond', sans-serif;
       padding: 10px;
+      margin: 0;
     }
 
+    /* ── Preview wrapper: skaliraj na širinu ekrana ── */
     .preview-wrapper {
-      zoom: 37%;
-      margin-bottom: 20px;
+      width: 100%;
+      max-width: 360px;
+      margin-bottom: 12px;
       border: 1px solid #ccc;
-      display: inline-block;
+      display: block;
+      overflow: hidden;
+    }
+    .preview-wrapper .capture-area {
+      transform-origin: top left;
     }
 
     .capture-area {
@@ -58,6 +67,7 @@
       white-space: normal;
       overflow-wrap: break-word;
       z-index: 5555;
+      transform-origin: center bottom;
     }
 
     .overlay-text-2 {
@@ -84,23 +94,65 @@
       display: block;
     }
 
-    .toolbar button { margin-right: 8px; font-size: 14px; padding: 4px 8px; cursor: pointer; }
+    .toolbar button { margin-right: 6px; margin-bottom: 6px; font-size: 14px; padding: 6px 10px; cursor: pointer; }
     .toolbar { margin-bottom: 10px; flex-wrap: wrap; display: flex; }
 
+    /* ── Range controls ── */
     .range-control {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: nowrap;
     }
-
-    .range-control input[type="range"] { flex: 1; }
-    .range-control input[type="number"] { width: 60px; }
+    .range-control label {
+      white-space: nowrap;
+      font-size: 13px;
+      min-width: 0;
+      flex-shrink: 0;
+    }
+    .range-control input[type="range"] {
+      flex: 1;
+      min-width: 0;
+      /* Veći klizač – vidljiv na mobitelu */
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: #ddd;
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+    }
+    .range-control input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #a50000;
+      cursor: pointer;
+      border: 2px solid #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,.35);
+    }
+    .range-control input[type="range"]::-moz-range-thumb {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #a50000;
+      cursor: pointer;
+      border: 2px solid #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,.35);
+    }
+    .range-control input[type="number"] {
+      width: 56px;
+      flex-shrink: 0;
+      font-size: 14px;
+      padding: 4px;
+    }
 
     #html-input {
       width: 100%;
-      min-height: 100px;
+      min-height: 80px;
       border: 1px solid #ccc;
       padding: 8px;
       font-size: 16px;
@@ -123,13 +175,40 @@
       left: 0; top: 0;
     }
 
-    .giga-wrapper { display: flex; min-width: 700px; gap: 20px; }
+    /* ── Layout: desktop = side by side, mobitel = kolona ── */
+    .giga-wrapper {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
     .mega-w label { display: block; }
 
-    /* Color dugmad (vizuelni prikaz boje) */
+    @media (max-width: 700px) {
+      .giga-wrapper {
+        flex-direction: column;
+      }
+      .wrapper-1 {
+        width: 100%;
+      }
+      #generate {
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+      }
+      #html-input {
+        font-size: 16px; /* sprečava auto-zoom na iOS */
+      }
+      input[type="text"],
+      input[type="number"],
+      input[type="file"] {
+        font-size: 16px; /* sprečava auto-zoom na iOS */
+      }
+    }
+
+    /* Color dugmad */
     .toolbar .color-btn{
-      width: 34px;
-      height: 28px;
+      width: 40px;
+      height: 34px;
       border: 1px solid #ccc;
       border-radius: 6px;
       display: inline-flex;
@@ -141,31 +220,28 @@
       background: #fff;
     }
     .toolbar .color-dot{
-      width: 18px;
-      height: 18px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       background: currentColor;
       border: 1px solid rgba(0,0,0,.15);
     }
     .toolbar .color-btn:focus{ outline: 2px solid #666; outline-offset: 2px; }
-      /* Grid linija po difoltu uključena */
-  #preview-area.grid-enabled::before {
-    width: 1px;
-    position: absolute;
-    height: 100%;
-    display: block;
-    right: 0;
-    left: 50%;
-    content: '';
-    background: #000;
-    z-index: 45444;
-    top: 0px;
-    transform: translateX(-50%);
-  }
-    .overlay-text {
-  transform-origin: center bottom;
-}
 
+    /* Grid linija */
+    #preview-area.grid-enabled::before {
+      width: 1px;
+      position: absolute;
+      height: 100%;
+      display: block;
+      right: 0;
+      left: 50%;
+      content: '';
+      background: #000;
+      z-index: 45444;
+      top: 0px;
+      transform: translateX(-50%);
+    }
   </style>
 </head>
 <body>
@@ -405,10 +481,19 @@
           useCORS: true,
           backgroundColor: null
         }).then(canvas => {
-          const link = document.getElementById('download-link');
-          link.href = canvas.toDataURL('image/png');
-          link.style.display = 'inline';
-          link.click();
+          const dataUrl = canvas.toDataURL('image/png');
+          // Otvori generisanu sliku u novom tabu
+          const newTab = window.open('', '_blank');
+          if (newTab) {
+            newTab.document.write(`<!DOCTYPE html><html><head><title>output.png</title><style>body{margin:0;background:#111;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;}img{max-width:100%;height:auto;display:block;}</style></head><body><img src="${dataUrl}" alt="output"></body></html>`);
+            newTab.document.close();
+          } else {
+            // Fallback ako je popup blokiran
+            const link = document.getElementById('download-link');
+            link.href = dataUrl;
+            link.style.display = 'inline';
+            link.click();
+          }
         });
       });
     });
@@ -534,18 +619,19 @@
   </script>
 
   <script>
-    // Viewport fix, kao i u prethodnom fajlu
-    document.addEventListener('DOMContentLoaded', function () {
-      let metaTag = document.querySelector('meta[name="viewport"]');
-      if (metaTag) {
-        metaTag.setAttribute('content', 'width=720');
-      } else {
-        metaTag = document.createElement('meta');
-        metaTag.name = "viewport";
-        metaTag.content = "width=720";
-        document.head.appendChild(metaTag);
-      }
-    });
+    // Dinamičko skaliranje previewa na osnovu širine wrappera
+    function scalePreview() {
+      const wrapper = document.querySelector('.preview-wrapper');
+      const area = document.getElementById('preview-area');
+      if (!wrapper || !area) return;
+      const w = wrapper.clientWidth;
+      const ratio = w / 960;
+      area.style.transform = `scale(${ratio})`;
+      area.style.transformOrigin = 'top left';
+      wrapper.style.height = Math.round(1200 * ratio) + 'px';
+    }
+    document.addEventListener('DOMContentLoaded', scalePreview);
+    window.addEventListener('resize', scalePreview);
   </script>
   
 <script>
