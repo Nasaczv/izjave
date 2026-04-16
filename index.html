@@ -18,11 +18,8 @@
     body {
       font-family: 'MyriadProBoldCond', sans-serif;
       padding: 10px;
-      overflow: hidden;
-      height: 100%;
     }
 
-    html { overflow: hidden; height: 100%; }
 
     .preview-wrapper {
       zoom: 37%;
@@ -235,6 +232,11 @@
         meta.content = 'width=720, maximum-scale=5, user-scalable=yes';
         document.head.appendChild(meta);
       }
+      // Scroll onemogućen na svim uređajima
+      document.documentElement.style.overflow = 'hidden';
+      document.documentElement.style.height = '100%';
+      document.body.style.overflow = 'hidden';
+      document.body.style.height = '100%';
     })();
   </script>
 </head>
