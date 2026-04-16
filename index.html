@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="sr">
 <head>
@@ -224,20 +225,20 @@
 
   </style>
   <script>
-    // iOS fix: sprečava auto-zoom na input, ali dozvoljava pinch zoom
+    // iOS fix: zoom onemogućen samo na iOS, Android može da zumira
     (function() {
-      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
       var meta = document.querySelector('meta[name="viewport"]') || document.createElement('meta');
       meta.name = 'viewport';
-      meta.content = isIOS
-        ? 'width=720, initial-scale=1, maximum-scale=1'
-        : 'width=720, maximum-scale=5, user-scalable=yes';
-      document.head.appendChild(meta);
-      // Drži maximum-scale=1 na iOS (Safari ga ponekad resetuje)
       if (isIOS) {
-        document.addEventListener('focusin', function() {
-          meta.content = 'width=720, initial-scale=1, maximum-scale=1';
-        });
+        meta.content = 'width=720, maximum-scale=1, user-scalable=no';
+        document.head.appendChild(meta);
+        document.addEventListener('touchstart', function() {
+          meta.content = 'width=720, maximum-scale=1, user-scalable=no';
+        }, { passive: true });
+      } else {
+        meta.content = 'width=720, maximum-scale=5, user-scalable=yes';
+        document.head.appendChild(meta);
       }
       // Scroll onemogućen na svim uređajima
       document.documentElement.style.overflow = 'hidden';
