@@ -15,9 +15,16 @@
       src: url('MyriadPro-BoldCond.otf') format('opentype');
     }
 
+    html, body {
+      overflow: hidden;
+      height: 100%;
+      overscroll-behavior: none;
+    }
+
     body {
       font-family: 'MyriadProBoldCond', sans-serif;
       padding: 10px;
+      touch-action: pan-x pan-y;
     }
 
 
