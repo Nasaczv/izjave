@@ -633,20 +633,7 @@
     updateTransform();
   </script>
 
-  <script>
-    // Viewport fix, kao i u prethodnom fajlu
-    document.addEventListener('DOMContentLoaded', function () {
-      let metaTag = document.querySelector('meta[name="viewport"]');
-      if (metaTag) {
-        metaTag.setAttribute('content', 'width=720, maximum-scale=1');
-      } else {
-        metaTag = document.createElement('meta');
-        metaTag.name = "viewport";
-        metaTag.content = "width=720";
-        document.head.appendChild(metaTag);
-      }
-    });
-  </script>
+  
   
 <script>
 const previewArea = document.getElementById('preview-area');
