@@ -220,16 +220,21 @@
 
   </style>
   <script>
-    // iOS fix: zoom uvek onemogućen
+    // iOS fix: zoom onemogućen samo na iOS, Android može da zumira
     (function() {
+      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
       var meta = document.querySelector('meta[name="viewport"]') || document.createElement('meta');
       meta.name = 'viewport';
-      meta.content = 'width=720, maximum-scale=1, user-scalable=no';
-      document.head.appendChild(meta);
-      // iOS Safari ponekad resetuje viewport — ovo ga drži zaključanim
-      document.addEventListener('touchstart', function() {
+      if (isIOS) {
         meta.content = 'width=720, maximum-scale=1, user-scalable=no';
-      }, { passive: true });
+        document.head.appendChild(meta);
+        document.addEventListener('touchstart', function() {
+          meta.content = 'width=720, maximum-scale=1, user-scalable=no';
+        }, { passive: true });
+      } else {
+        meta.content = 'width=720, maximum-scale=5, user-scalable=yes';
+        document.head.appendChild(meta);
+      }
     })();
   </script>
 </head>
