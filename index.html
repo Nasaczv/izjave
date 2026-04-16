@@ -95,26 +95,44 @@
       flex-wrap: wrap;
     }
 
-    .range-control input[type="range"] { flex: 1; }
+    .range-control input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      background: #ddd;
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+    }
     .range-control input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 58px;
-      height: 58px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
-      background: #a50000;
+      background: #a50000 !important;
       cursor: pointer;
       border: 2px solid #fff;
       box-shadow: 0 1px 4px rgba(0,0,0,.35);
     }
     .range-control input[type="range"]::-moz-range-thumb {
-      width: 58px;
-      height: 58px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
-      background: #a50000;
+      background: #a50000 !important;
       cursor: pointer;
       border: 2px solid #fff;
       box-shadow: 0 1px 4px rgba(0,0,0,.35);
+      -moz-appearance: none;
+    }
+    .range-control input[type="range"]::-ms-thumb {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: #a50000 !important;
+      cursor: pointer;
+      border: 2px solid #fff;
     }
     .range-control input[type="number"] { width: 60px; }
 
@@ -217,6 +235,7 @@
     <div class="wrapper-1">
       <!-- TOOLBAR -->
       <div class="toolbar">
+        <button onclick="toggleUppercase()"><b>AA</b></button>
         <button onclick="execCmd('bold')"><b>Bold</b></button>
         <button onclick="execCmd('italic')"><i>Italic</i></button>
         <button onclick="execCmd('justifyLeft')">Levo</button>
@@ -369,6 +388,21 @@
       };
       reader.readAsDataURL(file);
     });
+
+    // Uppercase toggle za ceo html-input
+    let isUppercase = false;
+    function toggleUppercase() {
+      const input = document.getElementById('html-input');
+      isUppercase = !isUppercase;
+      const val = isUppercase ? 'uppercase' : '';
+      input.style.textTransform = val;
+      document.getElementById('preview-text').style.textTransform = val;
+      document.getElementById('export-text').style.textTransform  = val;
+      // Vizuelno označi dugme
+      const btn = document.querySelector('button[onclick="toggleUppercase()"]');
+      btn.style.background = isUppercase ? '#a50000' : '';
+      btn.style.color = isUppercase ? '#fff' : '';
+    }
 
     // Editor komande
     function execCmd(command, value = null) {
