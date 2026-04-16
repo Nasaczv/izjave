@@ -390,7 +390,7 @@
     });
 
     // Uppercase toggle za ceo html-input
-    let isUppercase = false;
+    let isUppercase = true;
     function toggleUppercase() {
       const input = document.getElementById('html-input');
       isUppercase = !isUppercase;
@@ -403,6 +403,16 @@
       btn.style.background = isUppercase ? '#a50000' : '';
       btn.style.color = isUppercase ? '#fff' : '';
     }
+
+    // Primeni uppercase na startu
+    document.addEventListener('DOMContentLoaded', () => {
+      const val = 'uppercase';
+      document.getElementById('html-input').style.textTransform = val;
+      document.getElementById('preview-text').style.textTransform = val;
+      document.getElementById('export-text').style.textTransform  = val;
+      const btn = document.querySelector('button[onclick="toggleUppercase()"]');
+      if (btn) { btn.style.background = '#a50000'; btn.style.color = '#fff'; }
+    });
 
     // Editor komande
     function execCmd(command, value = null) {
