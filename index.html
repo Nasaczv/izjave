@@ -179,7 +179,6 @@
     .giga-wrapper { display: flex; min-width: 700px; gap: 20px; }
     .mega-w label { display: block; }
 
-    /* Color dugmad (vizuelni prikaz boje) */
     .toolbar .color-btn{
       width: 34px;
       height: 28px;
@@ -201,23 +200,22 @@
       border: 1px solid rgba(0,0,0,.15);
     }
     .toolbar .color-btn:focus{ outline: 2px solid #666; outline-offset: 2px; }
-      /* Grid linija po difoltu uključena */
-  #preview-area.grid-enabled::before {
-    width: 1px;
-    position: absolute;
-    height: 100%;
-    display: block;
-    right: 0;
-    left: 50%;
-    content: '';
-    background: #000;
-    z-index: 45444;
-    top: 0px;
-    transform: translateX(-50%);
-  }
+    #preview-area.grid-enabled::before {
+      width: 1px;
+      position: absolute;
+      height: 100%;
+      display: block;
+      right: 0;
+      left: 50%;
+      content: '';
+      background: #000;
+      z-index: 45444;
+      top: 0px;
+      transform: translateX(-50%);
+    }
     .overlay-text {
-  transform-origin: center bottom;
-}
+      transform-origin: center bottom;
+    }
 
   </style>
   <script>
@@ -227,7 +225,6 @@
       if (!meta) { meta = document.createElement('meta'); meta.name = 'viewport'; document.head.appendChild(meta); }
 
       if (isIOS) {
-        // iOS: zaključaj scroll i sprečavaj auto-zoom na input
         document.documentElement.style.overflow = 'hidden';
         document.documentElement.style.height = '100%';
         document.body.style.overflow = 'hidden';
@@ -256,7 +253,6 @@
           }, 50);
         });
       } else {
-        // Android i ostali: slobodan scroll i zoom, bez ograničenja
         meta.content = 'width=720, user-scalable=yes';
       }
     })();
@@ -302,7 +298,7 @@
 
       <!-- HTML TEXT INPUT -->
       <label>📝 Unesi HTML текст:</label><br>
-      <div id="html-input" contenteditable="true" data-placeholder="“Звезда од Барија није имала бољи тим!”"></div>
+      <div id="html-input" contenteditable="true" data-placeholder=""Звезда од Барија није имала бољи тим!""></div>
 
       <br>
 
@@ -344,19 +340,18 @@
         <input type="number" id="bottom-input" min="0" max="400" value="108">
       </div>
       <div class="range-control">
-  <label>🔍 Text scale:</label>
-  <input type="range" id="text-scale-range" min="0.50" max="3.00" step="0.01" value="1.00">
-  <input type="number" id="text-scale-input" min="0.50" max="3.00" step="0.01" value="1.00">
-</div>
+        <label>🔍 Text scale:</label>
+        <input type="range" id="text-scale-range" min="0.50" max="3.00" step="0.01" value="1.00">
+        <input type="number" id="text-scale-input" min="0.50" max="3.00" step="0.01" value="1.00">
+      </div>
 
-      <!-- CHECKBOX -->
-<div class="range-control">
-  <label>
-    <input type="checkbox" id="nema-grida">
-    ✅ Ima grida
-  </label>
-</div>
-      <!-- EXPORT -->
+      <div class="range-control">
+        <label>
+          <input type="checkbox" id="nema-grida">
+          ✅ Ima grida
+        </label>
+      </div>
+
       <br>
       <button id="generate">🎨 Generate PNG</button>
       <a id="download-link" style="display: none;" download="output.png">⬇️ Preuzmi sliku</a>
@@ -378,7 +373,6 @@
       exportBg.style.transform  = transform;
     }
 
-    // Desktop drag
     document.getElementById('preview-area').addEventListener('mousedown', e => {
       isDragging = true;
       dragStart = { x: e.clientX - pos.x, y: e.clientY - pos.y };
@@ -391,7 +385,6 @@
     });
     window.addEventListener('mouseup', () => isDragging = false);
 
-    // Zoom (wheel)
     document.getElementById('preview-area').addEventListener('wheel', e => {
       e.preventDefault();
       const delta = e.deltaY > 0 ? -0.05 : 0.05;
@@ -399,7 +392,6 @@
       updateTransform();
     });
 
-    // Touch drag + pinch zoom
     const area = document.getElementById('preview-area');
     area.addEventListener('touchstart', e => {
       lastTouches = [...e.touches];
@@ -430,7 +422,6 @@
       lastTouches = [];
     });
 
-    // Upload
     document.getElementById('bg-upload').addEventListener('change', function (event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -445,7 +436,6 @@
       reader.readAsDataURL(file);
     });
 
-    // Uppercase toggle za ceo html-input
     let isUppercase = true;
     function toggleUppercase() {
       const input = document.getElementById('html-input');
@@ -454,13 +444,11 @@
       input.style.textTransform = val;
       document.getElementById('preview-text').style.textTransform = val;
       document.getElementById('export-text').style.textTransform  = val;
-      // Vizuelno označi dugme
       const btn = document.querySelector('button[onclick="toggleUppercase()"]');
       btn.style.background = isUppercase ? '#a50000' : '';
       btn.style.color = isUppercase ? '#fff' : '';
     }
 
-    // Primeni uppercase na startu
     document.addEventListener('DOMContentLoaded', () => {
       const val = 'uppercase';
       document.getElementById('html-input').style.textTransform = val;
@@ -470,7 +458,6 @@
       if (btn) { btn.style.background = '#a50000'; btn.style.color = '#fff'; }
     });
 
-    // Editor komande
     function execCmd(command, value = null) {
       if (command === 'insertLineBreak') {
         document.execCommand('insertHTML', false, '<br>');
@@ -487,7 +474,6 @@
     }
     document.getElementById('html-input').addEventListener('input', syncHTML);
 
-    // Izjava (drugi tekst)
     document.getElementById('statement-input').addEventListener('input', function () {
       const value = this.value || "ИЗЈАВУ ДАЈЕ:";
       document.getElementById('preview-text-2').innerText = value;
@@ -507,15 +493,14 @@
     syncDualInputs(document.getElementById('bottom-range'), document.getElementById('bottom-input'),
       v => { document.getElementById('preview-text').style.bottom = v + 'px'; document.getElementById('export-text').style.bottom = v + 'px'; });
     syncDualInputs(
-  document.getElementById('text-scale-range'),
-  document.getElementById('text-scale-input'),
-  v => {
-    const s = parseFloat(v) || 1;
-    document.getElementById('preview-text').style.transform = `scale(${s})`;
-    document.getElementById('export-text').style.transform  = `scale(${s})`;
-  }
-);
-
+      document.getElementById('text-scale-range'),
+      document.getElementById('text-scale-input'),
+      v => {
+        const s = parseFloat(v) || 1;
+        document.getElementById('preview-text').style.transform = `scale(${s})`;
+        document.getElementById('export-text').style.transform  = `scale(${s})`;
+      }
+    );
 
     document.getElementById('generate').addEventListener('click', function () {
       syncHTML();
@@ -526,37 +511,36 @@
           backgroundColor: null
         }).then(canvas => {
           const dataUrl = canvas.toDataURL('image/png');
-          const newTab = window.open('', '_blank');
-          if (newTab) {
-            newTab.document.write(`<!DOCTYPE html><html><head><title>output.png</title><style>body{margin:0;background:#111;display:flex;justify-content:center;}img{max-width:100%;height:auto;display:block;}</style></head><body><img src="${dataUrl}"></body></html>`);
-            newTab.document.close();
-          } else {
-            // Fallback ako je popup blokiran
-            const link = document.getElementById('download-link');
-            link.href = dataUrl;
-            link.style.display = 'inline';
-            link.click();
-          }
+
+          // 1. Odmah preuzmi
+          const link = document.createElement('a');
+          link.href = dataUrl;
+          link.download = 'output.png';
+          link.click();
+
+          // 2. Nakon 300ms otvori u novom tabu
+          setTimeout(() => {
+            const newTab = window.open('', '_blank');
+            if (newTab) {
+              newTab.document.write(`<!DOCTYPE html><html><head><title>output.png</title><style>body{margin:0;background:#111;display:flex;justify-content:center;}img{max-width:100%;height:auto;display:block;}</style></head><body><img src="${dataUrl}"></body></html>`);
+              newTab.document.close();
+            }
+          }, 300);
         });
       });
     });
 
-    // ====== DOZVOLJENE BOJE (sa normalizacijom) ======
-    const ALLOWED_HEX = ['#333333', '#a50000']; // 6-cifreni hex
+    const ALLOWED_HEX = ['#333333', '#a50000'];
     const DEFAULT_HEX = '#333333';
     const htmlInput = document.getElementById('html-input');
 
     function toHex6(color) {
       if (!color) return '';
       color = color.trim().toLowerCase();
-
       if (color.startsWith('#')) {
-        if (color.length === 4) {
-          return `#${color[1]}${color[1]}${color[2]}${color[2]}${color[3]}${color[3]}`;
-        }
+        if (color.length === 4) return `#${color[1]}${color[1]}${color[2]}${color[2]}${color[3]}${color[3]}`;
         if (color.length === 7) return color;
       }
-
       const m = color.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
       if (m) {
         const r = (+m[1]).toString(16).padStart(2, '0');
@@ -564,12 +548,10 @@
         const b = (+m[3]).toString(16).padStart(2, '0');
         return `#${r}${g}${b}`;
       }
-
-      // nazivi boja i ostalo → koristi computed style
       const tmp = document.createElement('span');
       tmp.style.color = color;
       document.body.appendChild(tmp);
-      const cs = getComputedStyle(tmp).color; // rgb(a)
+      const cs = getComputedStyle(tmp).color;
       document.body.removeChild(tmp);
       return toHex6(cs);
     }
@@ -577,45 +559,36 @@
     function applyColor(color) {
       const wanted = toHex6(color);
       if (!ALLOWED_HEX.includes(wanted)) return;
-
       const sel = window.getSelection();
       if (!sel || sel.rangeCount === 0) return;
       const range = sel.getRangeAt(0);
       if (range.collapsed) return;
-
       try {
         document.execCommand('styleWithCSS', false, true);
         const ok = document.execCommand('foreColor', false, wanted);
         if (ok) { syncHTML(); return; }
       } catch (e) {}
-
-      // Fallback: Range API
       const span = document.createElement('span');
       span.style.color = wanted;
       try {
         const frag = range.extractContents();
         span.appendChild(frag);
         range.insertNode(span);
-
         sel.removeAllRanges();
         const newRange = document.createRange();
         newRange.selectNodeContents(span);
         sel.addRange(newRange);
       } catch (e) {
-        document.execCommand('insertHTML', false,
-          `<span style="color:${wanted}">${sel.toString()}</span>`);
+        document.execCommand('insertHTML', false, `<span style="color:${wanted}">${sel.toString()}</span>`);
       }
-
       syncHTML();
     }
 
-    // Klik na vizuelna dugmad
     document.querySelectorAll('.apply-color').forEach(btn => {
       btn.addEventListener('click', () => applyColor(btn.dataset.color));
     });
 
     function sanitizeColors(root) {
-      // inline style color → normalizuj, dozvoli samo ALLOWED_HEX
       root.querySelectorAll('[style]').forEach(el => {
         const hex = toHex6(el.style.color || '');
         if (hex) {
@@ -625,8 +598,6 @@
           el.removeAttribute('style');
         }
       });
-
-      // <font color="..."> → span style sa normalizacijom
       root.querySelectorAll('font[color]').forEach(el => {
         const hex = toHex6(el.getAttribute('color'));
         const span = document.createElement('span');
@@ -636,7 +607,6 @@
       });
     }
 
-    // PASTE: pročisti
     htmlInput.addEventListener('paste', (e) => {
       e.preventDefault();
       const cd = e.clipboardData || window.clipboardData;
@@ -648,35 +618,27 @@
       syncHTML();
     });
 
-    // INPUT: dodatna sanitizacija
     htmlInput.addEventListener('input', () => {
       sanitizeColors(htmlInput);
       syncHTML();
     });
 
-    // Ukloni eventualne <input type="color"> ako ih ima (od starih verzija)
     document.querySelectorAll('input[type="color"]').forEach(el => el.remove());
 
-    // Init
     updateTransform();
   </script>
 
-  
-  
-<script>
-const previewArea = document.getElementById('preview-area');
-const nemaGridaCheckbox = document.getElementById('nema-grida');
+  <script>
+    const previewArea = document.getElementById('preview-area');
+    const nemaGridaCheckbox = document.getElementById('nema-grida');
 
-// Po difoltu grid je isključen (checkbox nije čekiran, nema klase)
-
-nemaGridaCheckbox.addEventListener('change', () => {
-  if (nemaGridaCheckbox.checked) {
-    previewArea.classList.add('grid-enabled');   // uključi liniju
-  } else {
-    previewArea.classList.remove('grid-enabled'); // isključi liniju
-  }
-});
-
-</script>
+    nemaGridaCheckbox.addEventListener('change', () => {
+      if (nemaGridaCheckbox.checked) {
+        previewArea.classList.add('grid-enabled');
+      } else {
+        previewArea.classList.remove('grid-enabled');
+      }
+    });
+  </script>
 </body>
 </html>
